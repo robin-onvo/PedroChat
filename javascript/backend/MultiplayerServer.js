@@ -266,17 +266,17 @@ class MultiplayerServer {
 						session.clients.splice(index, 1);
 					}
 
-					const serialized = JSON.stringify({
+					const leavedData = JSON.stringify({
 						cmd: "left",
 						clientId: client.clientId,
 						data
 					});
 
-					for (let other of clientSet) {
+					session.clients.forEach((other) => {
 						if (other.isOpen()) {
-							other.send(serialized);
+							other.send(leavedData);
 						}
-					}
+					});
 
 					this.handleClose(client);
 

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <title>Modern Multiplayer Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <div class="app-card">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-logo">💬</div>
+          <div class="brand-text">
+            <h1>CanvasChat</h1>
+            <p>Multiplayer demo</p>
+          </div>
+        </div>
+
+        <section class="panel">
+          <h2>Profil</h2>
+          <label class="field">
+            <span>Visningsnamn</span>
+            <input id="user-name" type="text" placeholder="Ditt namn" />
+          </label>
+        </section>
+
+        <section class="panel">
+          <h2>Rum</h2>
+          <div class="room-controls">
+            <label class="field">
+              <span>Rumsnamn (valfritt vid host)</span>
+              <input id="room-name" type="text" placeholder="Ex: Dev-rummet" />
+            </label>
+
+            <button id="host-btn" class="btn btn-primary">Skapa nytt rum</button>
+
+            <div class="divider"><span>eller</span></div>
+
+            <label class="field">
+              <span>Rums-/sessionskod</span>
+              <input id="room-code" type="text" placeholder="ABC123" />
+            </label>
+
+            <button id="join-btn" class="btn btn-outline">Anslut till rum</button>
+
+            <button id="leave-btn" class="btn btn-danger btn-sm" disabled>Lämna rum</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Senaste session</h2>
+          <div id="last-session" class="last-session">
+            <p class="last-session-empty">Ingen sparad session ännu.</p>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Status</h2>
+          <p id="status-text" class="status-text">Inte ansluten.</p>
+        </section>
+
+        <section class="panel">
+          <h2>Online</h2>
+          <ul id="online-list" class="online-list"></ul>
+        </section>
+
+        <section class="panel panel-small">
+          <h2>Teknisk info</h2>
+          <ul class="meta-list">
+            <li>LocalStorage används endast för lokal historik.</li>
+            <li>Inga offlinemeddelanden – servern lagrar inte data.</li>
+          </ul>
+        </section>
+      </aside>
+
+      <main class="chat">
+        <header class="chat-header">
+          <div>
+            <h2 id="chat-room-title">Ingen session</h2>
+            <p id="chat-room-subtitle" class="chat-subtitle">Skapa eller anslut till ett rum för att börja chatta.</p>
+          </div>
+          <div class="chat-room-meta">
+            <div class="chip">
+              <span class="chip-label">Kod</span>
+              <span id="chat-room-code" class="chip-value">–</span>
+            </div>
+            <div class="chip">
+              <span class="chip-label">Roll</span>
+              <span id="chat-role" class="chip-value">–</span>
+            </div>
+          </div>
+        </header>
+
+        <section id="messages" class="chat-messages" aria-live="polite"></section>
+
+        <form id="message-form" class="chat-input">
+          <input
+            id="message-input"
+            type="text"
+            placeholder="Skriv ett meddelande..."
+            autocomplete="off"
+            disabled
+          />
+          <button id="send-btn" class="btn btn-primary" type="submit" disabled>Skicka</button>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

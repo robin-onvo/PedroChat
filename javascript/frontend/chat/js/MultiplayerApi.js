@@ -203,15 +203,14 @@ export class MultiplayerApi {
 		this.sessionId = null;
 	}
 
-	// type can be 'sessions' or 'clients'
-	list(type = "sessions") {
+	list() {
 		return new Promise((resolve, reject) => {
 			this.onList = (data) => {
 				this.onList = null;
 				return resolve(data);
 			};
 
-			const serialized = this._buildPayload('list', { type });
+			const serialized = this._buildPayload('list', {});
 			this._enqueueOrSend(serialized);
 		});
 	}

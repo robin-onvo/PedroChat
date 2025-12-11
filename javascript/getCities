@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Uppsala",
+    "latitude": 59.858600616455078,
+    "longitude": 17.638900756835938
+  },
+  {
+    "name": "Helsingborg",
+    "latitude": 56.046501159667969,
+    "longitude": 12.694499969482422
+  },
+  {
+    "name": "Jönköping",
+    "latitude": 57.781501770019531,
+    "longitude": 14.156200408935547
+  },
+  {
+    "name": "Västerås",
+    "latitude": 59.609901428222656,
+    "longitude": 16.5447998046875
+  },
+  {
+    "name": "Kiruna",
+    "latitude": 67.855796813964844,
+    "longitude": 20.225299835205078
+  },
+  {
+    "name": "Sundsvall",
+    "latitude": 62.390800476074219,
+    "longitude": 17.306900024414062
+  },
+  {
+    "name": "Norrköping",
+    "latitude": 58.587699890136719,
+    "longitude": 16.192399978637695
+  },
+  {
+    "name": "Gävle",
+    "latitude": 60.674900054931641,
+    "longitude": 17.141300201416016
+  },
+  {
+    "name": "Örebro",
+    "latitude": 59.274101257324219,
+    "longitude": 15.206600189208984
+  },
+  {
+    "name": "Lund",
+    "latitude": 55.704700469970703,
+    "longitude": 13.190999984741211
+  },
+  {
+    "name": "Luleå",
+    "latitude": 65.584800720214844,
+    "longitude": 22.156700134277344
+  },
+  {
+    "name": "Linköping",
+    "latitude": 58.410900115966797,
+    "longitude": 15.621600151062012
+  },
+  {
+    "name": "Malmö",
+    "latitude": 55.604999542236328,
+    "longitude": 13.003800392150879
+  },
+  {
+    "name": "Umeå",
+    "latitude": 63.825801849365234,
+    "longitude": 20.26300048828125
+  },
+  {
+    "name": "Stockholm",
+    "latitude": 59.329299926757812,
+    "longitude": 18.068599700927734
+  },
+  {
+    "name": "Göteborg",
+    "latitude": 57.708900451660156,
+    "longitude": 11.974599838256836
+  }
+]

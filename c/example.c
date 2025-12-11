@@ -147,7 +147,7 @@ int main_list(MultiplayerApi* api)
 int main()
 {
 
-	MultiplayerApi* api = mp_api_create("172.19.4.22", 9001, "c2438167-831b-4bf7-8bdc-0489eaf98e25");
+	MultiplayerApi* api = mp_api_create("kontoret.onvo.se", 9001, "c2438167-831b-4bf7-8bdc-0489eaf98e25");
 	if (!api)
 	{
 		printf("Failed to create MultiplayerApi instance\n");
