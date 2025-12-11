@@ -8,9 +8,9 @@
 #include <stdbool.h>
 
 #include "libs/jansson/jansson.h"
-#include "libs/MultiplayerApi.h"
+#include "libs/PedroChatApi.h"
 
-static void on_multiplayer_event(
+static void on_pedroChat_event(
     const char *event,
     int64_t messageId,
     const char *clientId,
@@ -23,7 +23,7 @@ static void on_multiplayer_event(
 	if(data)
 		strData = json_dumps(data, JSON_INDENT(2));
 
-	printf("Multiplayer event: %s (msgId: %lld, clientId: %s)\n", event, (long long)messageId, clientId ? clientId : "null");
+	printf("PedroChat event: %s (msgId: %lld, clientId: %s)\n", event, (long long)messageId, clientId ? clientId : "null");
 	if (strData)
 	{
 		printf("Data: %s\n", strData);
@@ -43,7 +43,7 @@ static void on_multiplayer_event(
     /* data är ett json_t* (object); anropa json_incref(data) om du vill spara det efter callbacken */
 }
 
-int main_host(MultiplayerApi* api)
+int main_host(PedroChatApi* api)
 {
 	json_t *data = json_object();
 	json_object_set_new(data, "name", json_string("My session"));
@@ -71,7 +71,7 @@ int main_host(MultiplayerApi* api)
 	return 0;
 }
 
-int main_join(MultiplayerApi* api, const char* sessionId)
+int main_join(PedroChatApi* api, const char* sessionId)
 {
 	char *joinedSession = NULL;
 	char *joinedClientId = NULL;
@@ -98,7 +98,7 @@ int main_join(MultiplayerApi* api, const char* sessionId)
 	return 0;
 }
 
-int main_list(MultiplayerApi* api)
+int main_list(PedroChatApi* api)
 {
 	printf("Hämtar lista över publika sessioner...\n");
 
@@ -147,10 +147,10 @@ int main_list(MultiplayerApi* api)
 int main()
 {
 
-	MultiplayerApi* api = mp_api_create("kontoret.onvo.se", 9001, "c2438167-831b-4bf7-8bdc-0489eaf98e25");
+	PedroChatApi* api = mp_api_create("kontoret.onvo.se", 9001, "c2438167-831b-4bf7-8bdc-0489eaf98e25");
 	if (!api)
 	{
-		printf("Failed to create MultiplayerApi instance\n");
+		printf("Failed to create PedroChatApi instance\n");
 		return -1;
 	}
 
@@ -159,7 +159,7 @@ int main()
 	//main_join(api, "HU2J7D");
 
 
-	int listener_id = mp_api_listen(api, on_multiplayer_event, NULL);
+	int listener_id = mp_api_listen(api, on_pedroChat_event, NULL);
 
 	json_t* data = json_object();
 	json_object_set_new(data, "score", json_integer(100));

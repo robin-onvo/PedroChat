@@ -1,11 +1,11 @@
 // js/chatClient.js
-import { MultiplayerApi } from "./MultiplayerApi.js";
+import { PedroChatApi } from "./PedroChatApi.js";
 
 const APP_IDENTIFIER = "67bdb04f-6e7c-4d76-81a3-191f7d78dd45";
 
 export class ChatClient {
 	constructor(serverUrl) {
-		this.api = new MultiplayerApi(serverUrl, APP_IDENTIFIER);
+		this.api = new PedroChatApi(serverUrl, APP_IDENTIFIER);
 		this.sessionId = null;
 		this.clientId = null;
 		this.userName = null;

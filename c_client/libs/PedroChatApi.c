@@ -1,4 +1,4 @@
-#include "MultiplayerApi.h"
+#include "PedroChatApi.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -14,17 +14,17 @@
 
 typedef struct ListenerNode {
     int id;
-    MultiplayerListener cb;
+    PedroChatListener cb;
     void *context;
     struct ListenerNode *next;
 } ListenerNode;
 
 typedef struct ListenerSnapshot {
-    MultiplayerListener cb;
+    PedroChatListener cb;
     void *context;
 } ListenerSnapshot;
 
-struct MultiplayerApi {
+struct PedroChatApi {
     char *server_host;
     uint16_t server_port;
 	char identifier[37];
@@ -41,22 +41,22 @@ struct MultiplayerApi {
 };
 
 static int connect_to_server(const char *host, uint16_t port);
-static int ensure_connected(MultiplayerApi *api);
+static int ensure_connected(PedroChatApi *api);
 static int send_all(int fd, const char *buf, size_t len);
-static int send_json_line(MultiplayerApi *api, json_t *obj); /* tar över ägarskap */
+static int send_json_line(PedroChatApi *api, json_t *obj); /* tar över ägarskap */
 static int read_line(int fd, char **out_line);
 static void *recv_thread_main(void *arg);
-static void process_line(MultiplayerApi *api, const char *line);
-static int start_recv_thread(MultiplayerApi *api);
+static void process_line(PedroChatApi *api, const char *line);
+static int start_recv_thread(PedroChatApi *api);
 
-MultiplayerApi *mp_api_create(const char *server_host, uint16_t server_port, const char *identifier)
+PedroChatApi *mp_api_create(const char *server_host, uint16_t server_port, const char *identifier)
 {
     int len = strlen(identifier);
 	if (len != 36) {
 		return NULL;
 	}
 	
-	MultiplayerApi *api = (MultiplayerApi *)calloc(1, sizeof(MultiplayerApi));
+	PedroChatApi *api = (PedroChatApi *)calloc(1, sizeof(PedroChatApi));
     if (!api) {
         return NULL;
     }
@@ -93,7 +93,7 @@ MultiplayerApi *mp_api_create(const char *server_host, uint16_t server_port, con
     return api;
 }
 
-void mp_api_destroy(MultiplayerApi *api) {
+void mp_api_destroy(PedroChatApi *api) {
     if (!api) return;
 
     if (api->recv_thread_started && api->sockfd >= 0) {
@@ -127,7 +127,7 @@ void mp_api_destroy(MultiplayerApi *api) {
     free(api);
 }
 
-int mp_api_host(MultiplayerApi *api,
+int mp_api_host(PedroChatApi *api,
 				json_t *data,
                 char **out_session,
                 char **out_clientId,
@@ -223,7 +223,7 @@ int mp_api_host(MultiplayerApi *api,
     return MP_API_OK;
 }
 
-int mp_api_list(MultiplayerApi *api, json_t **out_list)
+int mp_api_list(PedroChatApi *api, json_t **out_list)
 {
 	if (!api || !out_list) return MP_API_ERR_ARGUMENT;
 
@@ -282,7 +282,7 @@ int mp_api_list(MultiplayerApi *api, json_t **out_list)
 	return MP_API_OK;
 }
 
-int mp_api_join(MultiplayerApi *api,
+int mp_api_join(PedroChatApi *api,
                 const char *sessionId,
                 json_t *data,
                 char **out_session,
@@ -392,7 +392,7 @@ int mp_api_join(MultiplayerApi *api,
     return joinAccepted ? MP_API_OK : MP_API_ERR_REJECTED;
 }
 
-int mp_api_game(MultiplayerApi *api, json_t *data, const char* destination) {
+int mp_api_game(PedroChatApi *api, json_t *data, const char* destination) {
     if (!api || !data) return MP_API_ERR_ARGUMENT;
     if (api->sockfd < 0 || !api->session_id) return MP_API_ERR_STATE;
 
@@ -417,8 +417,8 @@ int mp_api_game(MultiplayerApi *api, json_t *data, const char* destination) {
     return send_json_line(api, root);
 }
 
-int mp_api_listen(MultiplayerApi *api,
-                  MultiplayerListener cb,
+int mp_api_listen(PedroChatApi *api,
+                  PedroChatListener cb,
                   void *context) {
     if (!api || !cb) return -1;
 
@@ -437,7 +437,7 @@ int mp_api_listen(MultiplayerApi *api,
     return node->id;
 }
 
-void mp_api_unlisten(MultiplayerApi *api, int listener_id) {
+void mp_api_unlisten(PedroChatApi *api, int listener_id) {
     if (!api || listener_id <= 0) return;
 
     pthread_mutex_lock(&api->lock);
@@ -493,7 +493,7 @@ static int connect_to_server(const char *host, uint16_t port) {
     return fd;
 }
 
-static int ensure_connected(MultiplayerApi *api) {
+static int ensure_connected(PedroChatApi *api) {
     if (!api) return MP_API_ERR_ARGUMENT;
     if (api->sockfd >= 0) return MP_API_OK;
 
@@ -521,7 +521,7 @@ static int send_all(int fd, const char *buf, size_t len) {
     return 0;
 }
 
-static int send_json_line(MultiplayerApi *api, json_t *obj) {
+static int send_json_line(PedroChatApi *api, json_t *obj) {
     if (!api || api->sockfd < 0 || !obj) return MP_API_ERR_ARGUMENT;
 
     char *text = json_dumps(obj, JSON_COMPACT);
@@ -589,7 +589,7 @@ static int read_line(int fd, char **out_line) {
     return MP_API_OK;
 }
 
-static void process_line(MultiplayerApi *api, const char *line) {
+static void process_line(PedroChatApi *api, const char *line) {
     if (!api || !line || !*line) return;
 
     json_error_t jerr;
@@ -684,7 +684,7 @@ static void process_line(MultiplayerApi *api, const char *line) {
 }
 
 static void *recv_thread_main(void *arg) {
-    MultiplayerApi *api = (MultiplayerApi *)arg;
+    PedroChatApi *api = (PedroChatApi *)arg;
     char buffer[1024];
     char *acc = NULL;
     size_t acc_len = 0;
@@ -740,7 +740,7 @@ static void *recv_thread_main(void *arg) {
     return NULL;
 }
 
-static int start_recv_thread(MultiplayerApi *api) {
+static int start_recv_thread(PedroChatApi *api) {
     if (!api) return MP_API_ERR_ARGUMENT;
     if (api->recv_thread_started) {
         return MP_API_OK;

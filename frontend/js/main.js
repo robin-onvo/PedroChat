@@ -1,10 +1,8 @@
-// js/main.js
 import { ChatClient } from "./chatClient.js";
 import { ChatStorage } from "./storage.js";
 import { ChatUI } from "./chatUI.js";
 
-// Justera till din riktiga WebSocket-adress
-const SERVER_URL = "ws://kontoret.onvo.se/multiplayer";
+const SERVER_URL = `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/net`;
 
 const ui = new ChatUI();
 const client = new ChatClient(SERVER_URL);

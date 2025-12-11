@@ -8,7 +8,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
-const MultiplayerServer = require("./MultiplayerServer.js");
+const PedroChatServer = require("./PedroChatServer.js");
 
 
 class Server {
@@ -68,7 +68,7 @@ class Server {
 		if (this.httpsServer)
 			servers.push(this.httpsServer);
 
-		this.multiplayer = new MultiplayerServer(servers, {
+		this.pedroChat = new PedroChatServer(servers, {
 			tcpPort: 9001
 		});
 

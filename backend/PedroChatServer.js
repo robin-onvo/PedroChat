@@ -3,7 +3,7 @@ const WebSocket = require("ws");
 const net = require("net");
 const { type } = require("os");
 
-class MultiplayerServer {
+class PedroChatServer {
 	servers = [];
 	sessions = new Map();
 
@@ -11,12 +11,12 @@ class MultiplayerServer {
 	tcpServer = null;
 
 	constructor(servers, options = {}) {
-		if (!servers) throw new Error("No server provided to MultiplayerServer");
+		if (!servers) throw new Error("No server provided to PedroChatServer");
 		if (!Array.isArray(servers)) throw new Error("servers must be an array");
 
 		this.servers = servers;
 
-		this.path = options.path || "/multiplayer";
+		this.path = options.path || "/net";
 		this.tcpPort = options.tcpPort;
 
 		this.wss = new WebSocket.Server(
@@ -31,18 +31,18 @@ class MultiplayerServer {
 
 		this.wss.on("connection", (ws) => this.handleWebSocketConnection(ws));
 
-		console.log("MultiplayerServer online at path:", this.path);
+		console.log("PedroChatServer online at path:", this.path);
 
 		// Starta TCP-server för C-klienter om tcpPort är satt
 		if (typeof this.tcpPort === "number") {
 			this.tcpServer = net.createServer((socket) => this.handleTcpConnection(socket));
 
 			this.tcpServer.on("error", (err) => {
-				console.error("Multiplayer TCP server error:", err);
+				console.error("PedroChat TCP server error:", err);
 			});
 
 			this.tcpServer.listen(this.tcpPort, () => {
-				console.log("Multiplayer TCP server listening on port:", this.tcpPort);
+				console.log("PedroChat TCP server listening on port:", this.tcpPort);
 			});
 		}
 	}
@@ -70,7 +70,7 @@ class MultiplayerServer {
 	// --- WebSocket-klienter (JS) ---
 
 	handleWebSocketConnection(ws) {
-		console.log("New WebSocket multiplayer connection");
+		console.log("New WebSocket pedroChat connection");
 
 		const client = {
 			type: "ws",
@@ -92,10 +92,10 @@ class MultiplayerServer {
 		ws.on("error", () => this.handleClose(client));
 	}
 
-	// --- TCP-klienter (C via MultiplayerApi.c) ---
+	// --- TCP-klienter (C via PedroChatApi.c) ---
 
 	handleTcpConnection(socket) {
-		console.log("New TCP multiplayer connection");
+		console.log("New TCP pedroChat connection");
 
 		socket.setEncoding("utf8");
 
@@ -377,5 +377,5 @@ class MultiplayerServer {
 	}
 }
 
-module.exports = MultiplayerServer;
+module.exports = PedroChatServer;
 
