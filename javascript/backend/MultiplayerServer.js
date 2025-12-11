@@ -197,7 +197,7 @@ class MultiplayerServer {
 				{
 					let session = this.sessions.get(sessionId);
 					if (!session) {
-						let session = {
+						session = {
 							identifier: identifier,
 							messageId: 0,
 							isPrivate: data.private === true,
