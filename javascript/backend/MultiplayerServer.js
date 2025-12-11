@@ -169,7 +169,8 @@ class MultiplayerServer {
 		switch (cmd) {
 			case "host":
 				{
-					sessionId = this.generateSessionId();
+					if (!sessionId)
+						sessionId = this.generateSessionId();
 
 					let session = {
 						identifier: identifier,
@@ -194,17 +195,19 @@ class MultiplayerServer {
 
 			case "join":
 				{
-					if (!sessionId || !this.sessions.has(sessionId)) {
-						client.send(JSON.stringify({
-							session: sessionId,
-							cmd: "join",
-							clientId: client.clientId,
-							data: { status: "error", reason: "invalid_session" }
-						}));
-						return;
-					}
-
 					let session = this.sessions.get(sessionId);
+					if (!session) {
+						let session = {
+							identifier: identifier,
+							messageId: 0,
+							isPrivate: data.private === true,
+							name: typeof data.name === "string" ? data.name : "Unnamed",
+							host: client,
+							clients: [client]
+						};
+
+						this.sessions.set(sessionId, session);
+					}
 
 					if (session.identifier !== identifier) {
 						client.send(JSON.stringify({
