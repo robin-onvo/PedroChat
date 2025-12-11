@@ -1,8 +1,8 @@
 # Variables
 CC=gcc
 OPTIMIZE=-ffunction-sections -fdata-sections -O2 -flto -Wno-unused-result -fno-strict-aliasing
-DEBUG_FLAGS=-g -O0 -Wfatal-errors -Werror -DWALLOCATOR_DEBUG -DWALLOCATOR_DEBUG_BORDERCHECK
-LIBS=-luuid -lcurl -pthread -lm -lbsd
+DEBUG_FLAGS=-g -O0 -Wfatal-errors -Werror
+LIBS=-luuid -pthread -lm
 INCLUDES = 
 
 #   -DWALLOCATOR_DEBUG -DWALLOCATOR_DEBUG_BORDERCHECK
@@ -12,7 +12,7 @@ INCLUDES =
 MODE ?= release
 
 # Base warnings/defs
-CFLAGS_BASE=-Wall -Wno-psabi -Wfatal-errors -Werror -DMBEDTLS_CONFIG_FILE='"mbedtls_config.h"'
+CFLAGS_BASE=-Wall -Wno-psabi -Wfatal-errors -Werror
 
 # Select flags per mode (OPTIMIZE goes into CFLAGS in release; LTO linked only in release)
 ifeq ($(MODE),debug)
