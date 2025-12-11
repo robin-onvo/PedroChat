@@ -265,6 +265,7 @@ body {
 .last-session-entry-title {
   margin: 0 0 2px;
   font-weight: 500;
+  color: var(--accent);
 }
 
 .last-session-entry-meta {
