@@ -320,6 +320,7 @@ body {
   background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.18), transparent 55%),
     radial-gradient(circle at bottom, rgba(79, 70, 229, 0.3), transparent 55%);
   padding: 14px;
+  min-height: 0;
 }
 
 .chat-header {
@@ -381,6 +382,7 @@ body {
   border: 1px solid rgba(148, 163, 184, 0.35);
   overflow-y: auto;
   position: relative;
+  min-height: 0;
 }
 
 .message {
