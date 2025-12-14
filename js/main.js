@@ -231,14 +231,23 @@ let localClientId = null;
 let isMultiplayer = false;
 
 // ----- MULTIPLAYER API -----
-const api = new MultiplayerApi("ws://localhost:8080");
+const api = new MultiplayerApi("ws://127.0.0.1:8080");
 
 // ---------- SCOREBOARD ----------
 function renderScoreboard() {
   scoreboardList.innerHTML = "";
-  scoreboard.entries.forEach((entry) => {
+
+  if (scoreboard.entries.length === 0) {
     const li = document.createElement("li");
-    li.textContent = `${entry.name}: ${entry.score}`;
+    li.textContent = "Inga resultat ännu.";
+    scoreboardList.appendChild(li);
+    return;
+  }
+
+
+  scoreboard.entries.forEach((entry, index) => {
+    const li = document.createElement("li");
+    li.textContent = `<strong>${index + 1}.</strong> ${entry.name} – ${entry.score} poäng`;
     scoreboardList.appendChild(li);
   });
 }
@@ -354,9 +363,14 @@ startLocalBtn.addEventListener("click", () => {
   localClientId = null;
   snakesByClientId.clear();
 
+  const maxX = game.board.width;
+  const maxY = game.board.height;
+
   // bara en lokal orm
-  const snake1 = new Snake(5, 5, "#4CAF50", "Local Player1");
-  const snake2 = new Snake(15, 10, "#2196F3", "Local Player 2");
+  const snake1 = new Snake(3, maxY - 4, "#4CAF50", "Local Player 1");
+  const snake2 = new Snake(maxX - 4, 3, "#2196F3", "Local Player 2");
+  //const snake1 = new Snake(5, 5, "#4CAF50", "Local Player1");
+  //const snake2 = new Snake(15, 10, "#2196F3", "Local Player 2");
   game.snakes = [snake1, snake2];
   localSnake = snake1;
 
