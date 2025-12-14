@@ -1,0 +1,42 @@
+body {
+  background: #111;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.game-area {
+  margin-bottom: 10px;
+}
+
+canvas {
+  background: black;
+  border: 2px solid #555;
+}
+
+.controls {
+  margin-bottom: 20px;
+}
+
+button {
+  margin: 5px 5px 5px 0;
+  padding: 8px 12px;
+  background: #4caf50;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+input {
+  padding: 6px;
+  margin: 5px;
+}
+
+#scoreboardList {
+  list-style: none;
+  padding-left: 0;
+}
